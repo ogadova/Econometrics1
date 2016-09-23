@@ -1,0 +1,62 @@
+---
+title: "task3"
+author: "Dovile Oganauskaite"
+date: '2016 m rugsėjis 23 d '
+output: html_document
+---
+Introduction
+Leaflet is one of the most popular open-source JavaScript libraries for interactive maps. ItÄĀĀs used by websites ranging from The New York Times and The Washington Post to GitHub and Flickr, as well as GIS specialists like OpenStreetMap, Mapbox, and CartoDB.
+
+This R package makes it easy to integrate and control Leaflet maps in R.
+
+Features
+Interactive panning/zooming
+Compose maps using arbitrary combinations of:
+Map tiles
+Markers
+Polygons
+Lines
+Popups
+GeoJSON
+Create maps right from the R console or RStudio
+Embed maps in knitr/R Markdown documents and Shiny apps
+Easily render Spatial objects from the sp package, or data frames with latitude/longitude columns
+Use map bounds and mouse events to drive Shiny logic
+Installation
+To install this R package, run this command at your R prompt:
+
+install.packages("leaflet")
+# to install the development version from Github, run
+# devtools::install_github("rstudio/leaflet")
+Once installed, you can use this package at the R console, within R Markdown documents, and within Shiny applications.
+
+Basic Usage
+You create a Leaflet map with these basic steps:
+
+Create a map widget by calling leaflet().
+Add layers (i.e., features) to the map by using layer functions (e.g. addTiles, addMarkers, addPolygons) to modify the map widget.
+Repeat step 2 as desired.
+Print the map widget to display it.
+HereÄĀĀs a basic example:
+
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+m  # Print the map
+
+
++
+-
+In case youÄĀĀre not familiar with the magrittr pipe operator (%>%), here is the equivalent without using pipes:
+
+m <- leaflet()
+m <- addTiles(m)
+m <- addMarkers(m, lng=174.768, lat=-36.852, popup="The birthplace of R")
+m
+
+Next Steps
+We highly recommend that you proceed to The Map Widget page before exploring the rest of this site, as it describes common idioms weÄĀĀll use throughout the examples on the other pages.
+
+Although we have tried to provide an R-like interface to Leaflet, you may want to check out the API documentation of Leaflet occasionally when the meanings of certain parameters are not clear to you.

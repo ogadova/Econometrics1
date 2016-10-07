@@ -15,13 +15,13 @@ Taip pamatome visus vartotojus, kurie ėjo kursą. Tačiau, matome, jog yra vadi
 x.gd <- subset(x, user != "aaa" & user != "testas" & user != "1vbutkus")
 unique(x.gd$user)
 ```
-Taip pat pastebime, jog yra skirtingų vartotojo vardų, priklausančių tam pačiam vartotoujui, tad visus tuos vardus priskiriame jų "šeimininkams".
+Taip pat pastebime, jog yra skirtingų vartotojo vardų, priklausančių tam pačiam vartotojui, tad visus tuos vardus priskiriame jų "šeimininkams".
 ```{r}
 Juste <- subset(x.gd, user == "j" | user == "ju" | user == "juste" | user == "Juste")
 gyse3054 <- subset(x.gd, user == "gyse3054" | user == "gyse")
 rokasaleks <- subset(x.gd, user == "rokasaleks" | user == "rokasalek")
 ```
-Dabar reikia išnagrinėti visus vartotojus, praleidusius klausimus.
+Dabar reikia juos atskirai išnagrinėti, kad vėliau jie nemaišytų.
 ```{r}
 unique(Juste$lesson_name)
 j <- split(juste, juste$skipped)
@@ -34,7 +34,16 @@ nrow(g$`TRUE`)
 unique(rokasaleks$lesson_name)
 r <- split(rokasaleks, rokasaleks$skipped)
 nrow(r$`TRUE`)
-
+```
+Taip pat reikia išnagrinėti likusius vartotojus.
+```{r}
+y<-subset(x.gd, user != "gyse" & user != "gyse3054" & user != "rokasalek" & user != "rokasaleks" & user != "j" & user != "ju" & user !="Juste" & user != "juste")
+m <- split(y, y$skipped)
+y.skip.true <- m$`TRUE`
+unique(y.skip.true$user)
+```
+Dabar reikia išnagrinėti kiek užduočių atliko vartotojai, praleidę klausimus.
+```{r}
 SandraKozlovskaja <- subset(x.gd, user == "SandraKozlovskaja")
 unique(Sandra$lesson_name)
 s<- split(Sandra, Sandra$skipped)
@@ -96,7 +105,7 @@ nrow(simonal$`TRUE`)
 ```
 Išrinkime žmones, kurie nepraleido nei vieno klausimo
 ```{r}
-y.skip.false.only<-subset(y, user != "Juste" & user !="gyse3054" & user !="rokasaleks" user != "SandraKozlovskaja" & user != "ojautakaite" & user != "sindeivydas" & user != "Domante Bulovaite" & user != "Greta" & user != "Karolina" & user != "kestous" & user != "ogadova" & user != "Raigardas" & user != "Dariukxas" & user != "gretajes" & user != "simonalevickaite")
+y.skip.false.only<-subset(y, user != "Juste" & user !="gyse3054" & user !="rokasaleks" & user != "SandraKozlovskaja" & user != "ojautakaite" & user != "sindeivydas" & user != "Domante Bulovaite" & user != "Greta" & user != "Karolina" & user != "kestous" & user != "ogadova" & user != "Raigardas" & user != "Dariukxas" & user != "gretajes" & user != "simonalevickaite")
 unique(y.skip.false.only$user)
 ```
 Tačiau, ar šie vartotojai atliko visas pamokas?
@@ -126,3 +135,5 @@ Danielius<-subset(y.skip.false.only, user == "Danielius")
 unique(Danielius$lesson_name)
 ```
 Iš gauto rezultato matome, kad visas užduotis atliko vartotojai "emru3000", "simona1234", "aipe00", "zagnyte", o visi kiti nepraleido nei vieno klausimo, tačiau atliko ne visas užduotis.
+
+Informacijos šaltinis: Sandra Kozlovskaja ir praeitos swirlo pamokos

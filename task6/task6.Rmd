@@ -1,0 +1,128 @@
+---
+title: "task6"
+author: "Dovile Oganauskaite"
+date: '2016 m spalis 7 d '
+output: html_document
+---
+#TASK6
+
+Nuskaityti duomenis:
+```{r}
+x=read.csv('C:/Users/As/Desktop/New Folder (2)/task6/R_programing_swirlResults.csv', stringsAsFactors=FALSE)
+```
+Taip pamatome visus vartotojus, kurie ėjo kursą. Tačiau, matome, jog yra vadinamosios "šiukšlės"- "aaa", "testas", "1vbutkus", t.y. neveiksnūs vartotojai arba dėstytojas. Tad sukuriame naują kintamąjį x.gd be "šiukšlių".
+```{r}
+x.gd <- subset(x, user != "aaa" & user != "testas" & user != "1vbutkus")
+unique(x.gd$user)
+```
+Taip pat pastebime, jog yra skirtingų vartotojo vardų, priklausančių tam pačiam vartotoujui, tad visus tuos vardus priskiriame jų "šeimininkams".
+```{r}
+Juste <- subset(x.gd, user == "j" | user == "ju" | user == "juste" | user == "Juste")
+gyse3054 <- subset(x.gd, user == "gyse3054" | user == "gyse")
+rokasaleks <- subset(x.gd, user == "rokasaleks" | user == "rokasalek")
+```
+Dabar reikia išnagrinėti visus vartotojus, praleidusius klausimus.
+```{r}
+unique(Juste$lesson_name)
+j <- split(juste, juste$skipped)
+nrow(j$`TRUE`)
+
+unique(gyse3054$lesson_name)
+g <- split(gyse, gyse$skipped)
+nrow(g$`TRUE`)
+
+unique(rokasaleks$lesson_name)
+r <- split(rokasaleks, rokasaleks$skipped)
+nrow(r$`TRUE`)
+
+SandraKozlovskaja <- subset(x.gd, user == "SandraKozlovskaja")
+unique(Sandra$lesson_name)
+s<- split(Sandra, Sandra$skipped)
+nrow(s$`TRUE`)
+
+ojautakaite <- subset(x.gd, user == "ojautakaite")
+o <- split(ojautakaite, ojautakaite$skipped)
+nrow(s$`TRUE`)
+
+sindeivydas <- subset(x.gd, user == "sindeivydas")
+unique(sindeivydas$lesson_name)
+sin <- split(sindeivydas, sindeivydas$skipped)
+nrow(sin$`TRUE`)
+
+Domante <- subset(x.gd, user == "Domante Bulovaite")
+unique(Domante$lesson_name)
+domante <- split(Domante, Domante$skipped)
+nrow(domante$`TRUE`)
+
+Greta <- subset(x.gd, user == "Greta")
+unique(Greta$lesson_name)
+greta <- split(Greta, Greta$skipped)
+nrow(greta$`TRUE`)
+
+Karolina <- subset(x.gd, user == "Karolina")
+unique(Karolina$lesson_name)
+karolina <- split(Karolina, Karolina$skipped)
+nrow(karolina$`TRUE`)
+
+kestous <- subset(x.gd, user == "kestous")
+unique(kestous$lesson_name)
+kest <- split(kestous, kestous$skipped)
+nrow(kest$`TRUE`)
+
+ogadova <- subset(x.gd, user == "ogadova")
+unique(ogadova$lesson_name)
+oga <- split(ogadova, ogadova$skipped)
+nrow(oga$`TRUE`)
+
+Raigardas <- subset(x.gd, user == "Raigardas")
+unique(Raigardas$lesson_name)
+raigardas <- split(Raigardas, Raigardas$skipped)
+nrow(raigardas$`TRUE`)
+
+Dariukxas <- subset(x.gd, user == "Dariukxas")
+unique(Dariukxas$lesson_name)
+Darius <- split(Dariukxas, Dariukxas$skipped)
+nrow(Darius$`TRUE`)
+
+gretajes <- subset(x.gd, user == "gretajes")
+unique(gretajes$lesson_name)
+gretaj <- split(gretajes, gretajes$skipped)
+nrow(gretaj$`TRUE`)
+
+simonalevickaite <- subset(x.gd, user == "simonalevickaite")
+unique(simonalevickaite$lesson_name)
+simonal <- split(simonalevickaite, simonalevickaite$skipped)
+nrow(simonal$`TRUE`)
+```
+Išrinkime žmones, kurie nepraleido nei vieno klausimo
+```{r}
+y.skip.false.only<-subset(y, user != "Juste" & user !="gyse3054" & user !="rokasaleks" user != "SandraKozlovskaja" & user != "ojautakaite" & user != "sindeivydas" & user != "Domante Bulovaite" & user != "Greta" & user != "Karolina" & user != "kestous" & user != "ogadova" & user != "Raigardas" & user != "Dariukxas" & user != "gretajes" & user != "simonalevickaite")
+unique(y.skip.false.only$user)
+```
+Tačiau, ar šie vartotojai atliko visas pamokas?
+```{r}
+emru3000<-subset(y.skip.false.only, user == "emru3000")
+unique(emru$lesson_name)
+
+simona1234<-subset(y.skip.false.only, user == "simona1234")
+unique(simona1234$lesson_name)
+
+Dominykas<-subset(y.skip.false.only, user == "Dominykas")
+unique(Dominykas$lesson_name)
+
+aipe00<-subset(y.skip.false.only, user == "aipe00")
+unique(aipe$lesson_name)
+
+MildaPie<-subset(y.skip.false.only, user == "MildaPie")
+unique(MildaPie$lesson_name)
+
+zagnyte<-subset(y.skip.false.only, user == "zagnyte")
+unique(zagnyte$lesson_name)
+
+edba2903<-subset(y.skip.false.only, user == "edba2903")
+unique(edba$lesson_name)
+
+Danielius<-subset(y.skip.false.only, user == "Danielius")
+unique(Danielius$lesson_name)
+```
+Iš gauto rezultato matome, kad visas užduotis atliko vartotojai "emru3000", "simona1234", "aipe00", "zagnyte", o visi kiti nepraleido nei vieno klausimo, tačiau atliko ne visas užduotis.

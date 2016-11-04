@@ -1,0 +1,57 @@
+---
+title: "task10"
+author: "Dovile Oganauskaite"
+date: '2016 m lapkritis 4 d '
+output: html_document
+---
+Užduotis:
+
+a) Tegul x1,...,X100∼N(1,2). Susigeneruokite tokią imtį ir patikrinkite nulinę hipotezę, kad H0:μ=1, su alternatyva, kad μ≠1. Tam reikalinga funkcija t.test. Detaliai paaiškinkite ką reiškia funkcijos išvestyje pateikti skaičiai.
+
+b) Kartokite a. dalies generavimą daug kartų (pvz.10^4) ir suskaičiuokite kiek atvejų buvo atmesta nulinė hipotezė? Išreiškite šį skaičių procentais. Kokią išvadą galite padaryti?
+
+Punktas a.
+```{r}
+n=100
+set.seed(123) #fiksuojame skaičius, t.y. kitą kartą kompiliuojant bus skaičiuojami ir nagrinėjami tie patys skaičiai, o ne kiti random sugeneruoti
+imtis<-rnorm(n, mean=1, sd=sqrt(2)) #generuojame imtį pagal normalųjį skirstinį, vidurkis=1, dispersija=2
+s<-t.test(imtis,mu=1) #skaičiuojame vienos imties t-test: mu - nulinė hipotezė
+s
+```
+Išvestyje matome:
+
+duomenys: imtis - tai mūsų sugeneruota imtis; t - paskaičiuota prašyta statistika; df=n-1=100-1=99 Stjudento skirstinio laisvės laipsnis; p-reikšmė - tikimybė, kad nagrinėdami konkrečią imtį atmesime teisingą nulinę hipotizę; alternatyvioji hipotezė: vidurkis nelygus 1; 95 pasikliautinasis intervalas: apatinė riba, viršutinė riba; imties įverčiai: mūsų sugeneruotos imties vidurkis.
+
+Ar nulinė hipotezė atmesta ar priimta, spręsti galime 3 būdais:
+
+Pagal p-reikšmę. Iš statistikos kurso žinome, kad nulinę hipotezę atmetame, kai p-reikšmė griežtai mažesnė už α(reikšmingumo lygmuo, standartinis α=0.05), kitais atvejais - neatmetame.
+Pagal 95 pasikliautinąjį intervalą. Jeigu 1 patenka į intervalą, vadinasi imties vidurkis statistiškai reikšmingai nesiskiria nuo 1, ir nulinė hipotezė, kad vidurkis lygus 1, neatmetama. Priešingai - jeigu 1 nepatenka į intervalą, vadinasi imties vidurkis statistiškai reikšmingai skiriasi nuo 1, ir priimame alternatyvą, kad vidurkis nelygus 1.
+Pagal statistiką t. Jeigu paskaičiuotos statistikos modulis didesnis už t kritinę reiškmę su n-1 laisvės laipsniu, nulinė hipotezė atmetama.
+*Šiuo atveju, 1 patenka į 95 pasikliautinąjį intervalą [0.8717074 ; 1.3839991], todėl imties vidurkis, kuris lygus 1.127853, statistiškai reikšmingai nesiskiria nuo 1, ir nulinė hipotezė neatmetama. Taip pat ir p-reikšmė, kuri lygi 0.3244, nemažesnė už α=0.05, vadinasi nulinė hipotezė natmetama.
+
+Punktas b.
+
+Kartosime punktą a. 10^4 kartų ir atmesime arba priimsime nulinę hipotezę atsižvelgdami į 95 pasikliautinąjį intervalą. Intervalą skaičiuosime pagal formulę x±Z*σ/√n.
+```{r}
+k=0
+f=10^4
+for (i in 1:f){ #kartojame ciklą 10^4 kartų
+  n=100
+  imtis<-rnorm(n, mean=1, sd=sqrt(2))
+  s<-t.test(imtis,mu=1)
+  m=mean(imtis) #suskaičiuojame imties vidurkį
+  z<-qt((1+0.95)/2, df=n-1) #paskaičiuojame z
+  ci<-z*(sd(imtis)/sqrt(n)) #Z*σ/√n
+  apatine=m-ci #apatinė intervalo riba
+  virsutine=m+ci #viršutinė intervalo riba
+  if (apatine>1 | virsutine<1){k=k+1} #jeigu 1 už intervalo ribų, t.y. mažesnis už apatinę arba didesnis už viršutinę, prie k pridedamas 1, taip suskaičiuojame kiek tokių 1, kurie nepatenka į intervalą.
+}
+k*100/f #suskaičiuojame kiek procentų sudaro nepatekusieji (kiek procentų sudaro atmestos nulinės hipotezės)
+```
+Tiek procentų sudaro atmestos nulinės hipotezės.
+
+Išvada
+
+Atmestų nulinių hipotezių, kad imties vidurkis lygus 1, yra 4.88%. Šis procentas yra labai mažas ir tai reiškia, kad mūsų generuotų imčių vidurkiai statistiškai reikšmingai nesiskiria nuo 1. Vadinasi, teisinga nulinė hipotezė, kad vidurkis lygus 1 (o ji teisinga, nes mes taip generavome pagal normalųjį skirstinį (1,2), kur vidurkis yra 1, о dispersija 2), 95.12% atvejų buvo priimta. Tačiau, kaip matome, 4.88% nulinių hipotezių buvo atmesta, nors jos yra teisingos. Primenu, kad mūsų reikšmingumo lygmuo α=0.05, t.y. tikimybė atmesti teisingą nulinę hipotezę lygi 5%. Taip panašiai ir gavome.
+
+Informacijos šaltinis: Sandra Kozlovskaja

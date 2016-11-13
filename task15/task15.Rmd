@@ -1,0 +1,78 @@
+---
+title: "task15"
+author: "Dovile Oganauskaite"
+date: '2016 m lapkritis 10 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Uþdavinys:
+
+Jums reikia atlikti paprastà tiesinæ regresijà. Prognozuojamas kintamasis y, regresosrius x. Duomenø failas:
+
+https://github.com/1vbutkus/Econometrics1/blob/master/task15/data.csv
+
+1. Ávertinti paprastosios tiesinës regresijos modelá. Pateikti modelio `summary` ir pakomentuoti kà reiðkia gauti skaièiai. Kaip interpretuoti gautus rezultatus?
+
+2. Padarykite modelio prognozes taðkuose $0, 0.3, 0.5$. 
+
+3. Iðbrëþkite kintamøjø sklaidos diagramà kartu su tiesinës regresijos tiese ir naujomis prognozëmis. Grafikà pateikite su pilna legena, kurioje bûtø nurodyti visi þymëjimai.
+
+4. Pakomentuokite ar tinkamas ðis modelis duotiems duomenims. Ar galite pateikti tobulinimo pasiûlymø?
+
+
+
+
+1. Ávertinti paprastosios tiesinës regresijos modelá. Pateikti modelio `summary` ir pakomentuoti kà reiðkia gauti skaièiai. Kaip interpretuoti gautus rezultatus?
+
+Ið pradþiø nuskaitome failà.
+```{r}
+duom=read.csv("C:/Users/As/Desktop/New Folder (2)/task15/data.csv", stringsAsFactors = FALSE)
+```
+```{r}
+a = duom$x # x - regresorius
+b = duom$y # y - prognozuojamas kintamasis
+plot(a, b, xlab = "x", ylab = "y", pch = 3, col = '2')  # Grafiðkai pavaizduojame kintamøjø sklaidà
+```
+```{r}
+modelis <- lm(b~a)
+summary(modelis)
+```
+
+Funkcijos iðvestyje matome:
+Iðkviestos funkcijos formulë
+Likutis ('Residuals'): minimumo taðkas ('Min'), pirmas kvartilis ('1Q'), mediana (2kvartilis) ('Median'), 3 kvartilis ('3Q') bei maksimumo taðkas ('Max').
+Koeficientai: ávertis ('Estimate'), standartinë paklaida ('Standard error'), statistika ('t-statistic') ir tikimybë ('p-value')
+Reikðmingumo kodai, paprasèiau, tikimybës kategorijos
+Duomenø standartinë paklaida: 0.1065 su 98 laivës laipsniu
+Pakeltas R kvadratu ir pritaikytas R kvadratu parodo kiek mûsø modelis yra tinkamas
+Fiðerio skirstinio statistika ('F-statistic')
+Tikimybë ('p-value')
+  
+2. Padarykite modelio prognozes taðkuose $0, 0.3, 0.5$.
+
+```{r}
+newa = c(0, 0.3, 0.5)  # Fiksuojame naujà  kintamàjá 'newa'
+newb = predict(modelis, newdata = data.frame(a=newa))
+newb
+plot(newa, newb, pch = 3, col = '2')  # Paþiûrime, kur yra naujieji taðkai
+```
+
+
+3. Iðbrëþkite kintamøjø sklaidos diagramà kartu su tiesinës regresijos tiese ir naujomis prognozëmis. Grafikà pateikite su pilna legena, kurioje bûtø nurodyti visi þymëjimai.
+
+```{r}
+plot(a, b, main = 'Sklaidos diagrama', xlab = "x", ylab = "y", xlim = c(0, 0.7), pch = 3, col = '2')  # Nubraiþome pirminiø duomenø sklaidà
+modelis <- lm(b~a)  # Pakartojame modelá, jog bûtø galima nubrëþti tiesæ
+abline(modelis, pch = 3, col = '3')  # Nubrëþiame tiesinës regresijos tiesæ
+newa = c(0, 0.3, 0.5) 
+newb = predict(modelis, newdata = data.frame(a=newa))  # Naudosime naujuosius taðkus grafikui
+points(newa, newb, pch = 7, col = '4')  # Paþymime naujai iðvestus taðkus grafike
+legend( 0, 0.7, c("Pradinë sklaida", "Tiesinë regresija", "Naujos reikðmës"), lty = c(0, 1, 0), pch = c(3, 3, 7), col = c('2','3','4'))  # Susikuriame legendà
+```
+
+4. Pakomentuokite ar tinkamas ðis modelis duotiems duomenims. Ar galite pateikti tobulinimo pasiûlymø?
+
+Modelis nëra tinkamas duotiems duomenimis, kadangi funkcija yra "iðriesta" ir jos linkyje esanti reikðmë yra per daug toli nuo tiesinës funkcijos reikðmës.

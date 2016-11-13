@@ -1,0 +1,57 @@
+---
+title: "task11"
+author: "Dovile Oganauskaite"
+date: '2016 m lapkritis 13 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Uþduotis
+Pakete datasets yra duomenø masyvas longley. Ið ðio kintamøjø padarykite tiesinæ regresijà, kur prognozuojamas kintamasis bûtø GNP, o regresorius Employed. Jums reikia:
+
+(1) Ávertinti paprastosios tiesinës regresijos modelá. Pateikti modelio summary ir pakomentuoti kà reiðkia gauti skaièiai. Kaip interpretuoti gautus rezultatus?
+```{r}
+longley  # Perþiûrime duomenø masyvà
+```
+```{r}
+x = longley$Employed  # Regresoriumi parenkame kategorijà 'Employed'
+y = longley$GNP  # Prognozuojamu kintamuoju parenkame 'GNP' kategorijà
+
+plot(x, y, xlab = "Employed", ylab = "GNP", pch = 3, col = '2')  # Grafiðkai pavaizduojame kintamøjø sklaidà
+
+modelis <- lm(y~x)
+summary(modelis)
+```
+Funkcijos iðvestyje matome:
+
+Iðkviestos funkcijos formulë
+Likutis ('Residuals'): minimumo taðkas ('Min'), pirmas kvartilis ('1Q'), mediana (2kvartilis) ('Median'), 3 kvartilis ('3Q') bei maksimumo taðkas ('Max').
+Koeficientai: ávertis ('Estimate'), standartinë paklaida ('Standard error'), statistika ('t-statistic') ir tikimybë ('p-value')
+Reikðmingumo kodai, paprasèiau, tikimybës kategorijos
+Duomenø standartinë paklaida: 0.6566 su 14 laivës laipsniu
+Pakeltas R kvadratu ir pritaikytas R kvadratu parodo kiek mûsø modelis yra tinkamas
+Fiðerio skirstinio statistika ('F-statistic')
+Tikimybë ('p-value')
+Pagal duomenis matome, jog tikimybë yra maþesnë uþ 0.05, taigi modelyje regresorius yra statistiðkai reikðmingas. Taip pat tai parodo ir tikimybë esanti 'Pr(>|t|)' stulpelyje, kuri irgi maþesnë uþ 0.05.
+
+(2) Padarykite modelio prognozes taðkuose 62, 65, 68.
+```{r}
+newx = c(62,65,68)  # Fiksuojame naujà  kintamàjá 'newx'
+newy = predict(modelis, newdata = data.frame(x=newx))  # Randame 'newx' atitinkamà koordinatæ 'newy'
+newy
+plot(newx, newy, pch = 3, col = '2')  # Paþiûrime, kur randasi naujieji taðkai
+```
+(3) Iðbrëþkite kintamøjø sklaidos diagramà kartu su tiesinës regresijos tiese ir naujomis prognozëmis. Grafikà pateikite su pilna legenda, kurioje bûtø nurodyti visi þymëjimai.
+```{r}
+plot(x, y, main = 'Sklaidos diagrama', xlab = "Employed", ylab = "GNP", xlim = c(59, 72), pch = 3, col = '2')  # Nubraiþome pirminiø duomenø sklaidà
+modelis <- lm(y~x)  # Pakartojame modelá, jog bûtø galima nubrëþti tiesæ
+abline(modelis, pch = 3, col = '3')  # Nubrëþiame tiesinës regresijos tiesæ
+newx = c(62,65,68)  
+newy = predict(modelis, newdata = data.frame(x=newx))  # Naudosime naujuosius taðkus grafikui
+points(newx, newy, pch = 7, col = '4')  # Paþymime naujai ásivestus taðkus grafike
+legend( 68, 340, c("Pradinë sklaida", "Tiesinë regresija", "Naujos reikðmës"), lty = c(0, 1, 0), pch = c(3, 3, 7), col = c('2','3','4'))  # Susikuriame legendà
+```
+
+Ðaltinis: Greta Lauruðkytë

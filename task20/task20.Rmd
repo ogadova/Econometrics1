@@ -1,0 +1,25 @@
+---
+title: "task20"
+author: "Dovile Oganauskaite"
+date: '2016 m gruodis 2 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Greitas skaičiavimas
+Užduotis:
+Su kuriomis natūraliosiomis n∈[1,1000]∈reikšmėmis skaičius
+n3+n2+n2+1
+dalinasi iš 403?
+
+Raskite atsakymą su R nenaudodami ciklų.
+```{r}
+n = 1:1000 #uŽrašome, n intervalą
+y = n^3+n^2+n^2+1 #uŽrašome lygtį
+ind = y%%403 == 0 #pažymime, jog gautas y skaičius turi dalintis iš 403 be liekanos
+ind[is.na(ind)] = FALSE 
+paste("n=",n[ind]) #užrašomos gautos n reikšmės, su kuriomis skaičius y dalinasi iš 403
+```
+Šaltiniai: task16 ir https://github.com/1vbutkus/Econometrics1/blob/master/notes/notes.Rmd

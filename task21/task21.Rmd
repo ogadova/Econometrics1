@@ -1,0 +1,75 @@
+---
+title: "task21"
+author: "Dovile Oganauskaite"
+date: '2016 m gruodis 5 d '
+output: html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Užduotis.
+
+***Skirstinio radimas***
+
+Vyksta toks lošimas: pradžioje metami du lošimo kauliukai ir užfiksuojama iškritusių akučių suma, pažymėkime ją s. Po to metama moneta. Jei iškrito herbas, tai laimite sumą s,  o jei skaičius, tai pralošiate 7.5. 
+
+***a)*** Raskite teorinį lošimo baigties skirstinį.
+
+Naudosime biblioteką "prob"
+```{r, include=FALSE}
+library("prob")
+```
+
+```{r}
+St <- rolldie(2, nsides=6, makespace=TRUE)
+St <- addrv(St, sum = X1 + X2)
+S_teor <- marginal(St, vars = "sum")
+S_teor
+```
+```{r}
+sums = S_teor[,1]
+m = data.frame(S_teor) 
+probs <- S_teor[,2]/2 # kadangi tikimybė, jog iškris herbas arba skaičius yra 1/2, tai visas kauliukų iškritimo galimybes taip pat reikai padalinti pusiau, nes tikimybė pralošti 7,5 yra 1/2
+skirstinys <- cbind(sums, probs)
+newrow <- data.frame(sums = -7.5, probs = 0.5)# įtraukiama paskutinė galimybė - kad iškrito skaičius, kurios tikimybė yra 1/2
+skirstinys <- rbind(skirstinys, newrow)
+skirstinys
+```
+
+
+***b)*** Atlikite Monte-Carlo modeliavimą ir gautus rezultatus palyginkite su teoriniais.
+
+```{r}
+n = 10^5
+x1 = sample(1:6, n, replace = TRUE)
+x2 = sample(1:6, n, replace = TRUE) #sugeneruojame n kauliukų metimų
+S <- x1 + x2
+moneta = sample(c(0, 1), n, replace = TRUE) #sugeneruojame n monetos metimų, kai 0 reiškia, kad iškrito skaičius, o 1, kad iškrito herbas
+x <- moneta*S #sudauginame kauliukų metimų sumą sumonetos metimais
+x[x==0] = -7.5 #gautas nulines reikšmes pakeičiame į -7,5
+```
+
+X lentelėje gautus duomenis padaliname iš n (lošimų skaičiaus) ir gauname rezultatus, kurie mažai skiriasi nuo teorinių.
+```{r}
+table(x)/n
+```
+
+Skirstinių palyginimas:
+s    |  teorinis   |  empirinis|
+-----|-------------|-----------|
+2    |   0.01389   | 0.01414   |
+3    |   0.02778   | 0.02781   |
+4    |   0.04167   | 0.04095   |
+5    |   0.05556   | 0.05576   |
+6    |   0.06944   | 0.06850   |
+7    |   0.08333   | 0.08322   |
+8    |   0.06944   | 0.06976   |
+9    |   0.05556   | 0.05595   |
+10   |   0.04167   | 0.04203   |
+11   |   0.02778   | 0.02765   |
+12   |   0.01389   | 0.01358   |
+-7,5 |   0.50000   | 0.50065   |
+
+
+Šaltiniai: http://www.rfortraders.com/simulation-of-a-coin-toss-in-r/, Raigardas Balužis, task5

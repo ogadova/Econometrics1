@@ -1,0 +1,30 @@
+---
+title: "task16"
+author: "Dovile Oganauskaite"
+date: '2016 m lapkritis 11 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Uždavinys. Išspręskite lygtį sveikaisiais skaičiais:
+
+x + y + 5 = xy
+
+Jums reikia rasti visus sprendinius ir įsitikinti, kad rasti visi sprendiniai.
+
+```{r}
+x <- rep(0:20) 
+y<- rep(0:20)
+z <- setdiff(-10:10, 1) 
+funkcija <- function(x){(x+5)/(x-1)} #išsireiškiamas iš lygties y ir įstatomas į funkciją
+for(i in 1:20){
+  y[i] = funkcija(z[i])
+  if (y[i]%%1 == 0){ #jeigu y gaunamas be liekanos, tada
+    print(paste("x =", z[i], "y =", y[i])) #atspausdinamos visos galimos x ir y reikšmės
+  }
+}
+
+```
+Šaltinis: Raigardo Balužio darbas

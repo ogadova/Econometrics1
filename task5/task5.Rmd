@@ -9,7 +9,12 @@ output: html_document
 Tarkime, kad ridenami trys taisyklingi standartiniai lošimo kauliukai. Fiksuojama iškritusių akučių suma, pažymėkime šį atsitiktinį dydį S.
 
 1.Atlikite Monte-Carlo modeliavimą sugeneruodami S atsitiktinio dydžio nepriklausomas realizacijas S1, S2, …, Sn. Čia n=10^5.
+```{r, include=FALSE}
+library(prob)
+```
+
 ```{r}
+n=10^5
 x1=sample(1:6, n, replace=TRUE)
 x2=sample(1:6, n, replace=TRUE)
 x3=sample(1:6, n, replace=TRUE)
